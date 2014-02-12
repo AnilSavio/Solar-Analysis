@@ -44,20 +44,21 @@ class getdata:
                     cellSize = float(infile.readline().split(' ')[1].strip())
                     nullValue = infile.readline().split(' ')[1].strip()
 
-                    if column < numberofColumns and row < numberofRows:
-                        newCalcCol = column * cellSize  + XLLCorner
-                        newRowCalc =YLLCorner+ row * cellSize
-                        coOrdinates= {newCalcCol,newRowCalc}
-                        print coOrdinates
-                    else:
-                        print ('Error column or row is out of index')
+                  #  if column < numberofColumns and row < numberofRows:
+                  #      newCalcCol = column * cellSize  + XLLCorner
+                  #      newRowCalc =YLLCorner+ row * cellSize
+                  #      coOrdinates= {newCalcCol,newRowCalc}
+                  #      print coOrdinates
+                  #  else:
+                  #      print ('Error column or row is out of index')
 
                     with open(rootdir+'Matrix.txt','w') as matrixFile:
-
                         matrixFile.write("month,day,year,hour,coordinate1,coordinate2\n")
                         for r in xrange(0, numberofColumns  -1):
                             for c in xrange(0,  numberofRows -1) :
                                 newCalcCol = c * cellSize  + XLLCorner
                                 newRowCalc = r * cellSize + YLLCorner
                                 matrixFile.write('%s,%s,%s,%s,%s,%s\n' %(month,day,year,hour,newCalcCol,newRowCalc))
-                                matrixFile.close()
+                               
+                    matrixFile.close()
+                    infile.close()
