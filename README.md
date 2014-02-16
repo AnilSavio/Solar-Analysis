@@ -1,5 +1,3 @@
-Solar-Analysis
-==============
 import numpy as np
 import os
 import fnmatch
@@ -30,6 +28,8 @@ class getdata:
             if searchFileName in  fileList :
                 filePath=os.path.join(dirName,searchFileName)
 
+                self.filePath=filePath
+
                 print filePath
 
                 DNI=pd.read_csv(filePath,skiprows=6, sep='\s+')
@@ -44,21 +44,31 @@ class getdata:
                     cellSize = float(infile.readline().split(' ')[1].strip())
                     nullValue = infile.readline().split(' ')[1].strip()
 
-                  #  if column < numberofColumns and row < numberofRows:
-                  #      newCalcCol = column * cellSize  + XLLCorner
-                  #      newRowCalc =YLLCorner+ row * cellSize
-                  #      coOrdinates= {newCalcCol,newRowCalc}
-                  #      print coOrdinates
-                  #  else:
-                  #      print ('Error column or row is out of index')
+                    self.numberofColumns=numberofColumns
+                    self.numberofRows=numberofRows
+                    self.XLLCorner=XLLCorner
+                    self.YLLCorner=YLLCorner
+                    self.cellSize=cellSize
+                    self.nullValue=nullValue
 
-                    with open(rootdir+'Matrix.txt','w') as matrixFile:
-                        matrixFile.write("month,day,year,hour,coordinate1,coordinate2\n")
-                        for r in xrange(0, numberofColumns  -1):
-                            for c in xrange(0,  numberofRows -1) :
-                                newCalcCol = c * cellSize  + XLLCorner
-                                newRowCalc = r * cellSize + YLLCorner
-                                matrixFile.write('%s,%s,%s,%s,%s,%s\n' %(month,day,year,hour,newCalcCol,newRowCalc))
-                               
-                    matrixFile.close()
-                    infile.close()
+                    if column < numberofColumns and row < numberofRows:
+                        newCalcCol = column * cellSize  + XLLCorner
+                        newRowCalc =YLLCorner+ row * cellSize
+                        coOrdinates= {newCalcCol,newRowCalc}
+                        print coOrdinates
+                    else:
+                        print ('Error column or row is out of index')
+                
+    def matrix(self):
+        with open(self.filePath) as infile:
+            with open('Matrix.txt','w') as matrixFile:
+                matrixFile.write("Month,Day,Year,Hour,Latitude,Longitude\n")
+                for r in xrange(0, self.numberofColumns  -1):
+                    for c in xrange(0,  self.numberofRows -1) :
+                        newCalcCol = c * self.cellSize  + self.XLLCorner
+                        newRowCalc = r * self.cellSize + self.YLLCorner
+                        matrixFile.write('%s,%s,%s,%s,%s,%s\n' %(self.month,self.day,self.year,self.hour,newCalcCol, newRowCalc))
+
+
+
+
